@@ -20,9 +20,15 @@ namespace BasicConfig.WorkerService
                     _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
                 }
 
-                var delay = TimeSpan.Parse(_config["Delay"] ?? "0:0:05");
+                // originally: await Task.Delay(1_000, stoppingToken);
 
-                //await Task.Delay(1_000, stoppingToken);
+                // manual parse of delay from appsettings.json
+                // var delay = TimeSpan.Parse(_config["Delay"] ?? "0:0:05");
+
+                // binding to a configuration section
+                var delay = _config.GetValue<TimeSpan>("Delay", TimeSpan.FromSeconds(5));
+
+
                 await Task.Delay(delay, stoppingToken);
             }
         }
