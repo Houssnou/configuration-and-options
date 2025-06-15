@@ -1,15 +1,14 @@
 ﻿using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ConfigurationsWithOptionPatternWithValidation.Features
 {
-    /// <summary>
-    /// A representation of a "feature" options object.
-    /// </summary>
+    //[OptionsValidator]
     public sealed partial record class FeatureOptions : IValidateOptions<FeatureOptions>
     {
         /// <summary>
@@ -20,12 +19,18 @@ namespace ConfigurationsWithOptionPatternWithValidation.Features
         /// <summary>
         /// Gets or sets the name of the feature.
         /// </summary>
+        [MaxLength(
+            length: 100,
+            ErrorMessage = "The name cannot be longer than 100 characters.")]
         public string? Name { get; set; }
 
         /// <summary>
         /// Gets or sets the version of the feature.
         /// </summary>
-        public Version? Version { get; set; }
+        [RegularExpression(
+            pattern: @"^\d+(\.\d+){1,3}$",
+            ErrorMessage = "The version input doesn't match the regex.")]
+        public string? Version { get; set; }
 
         /// <summary>
         /// Gets or sets the endpoint (<see cref="Uri"/>) of the feature.
@@ -35,58 +40,22 @@ namespace ConfigurationsWithOptionPatternWithValidation.Features
         /// <summary>
         /// Gets or sets the API key of the feature.
         /// </summary>
+        [Key]
         public string? ApiKey { get; set; }
 
         /// <summary>
         /// Gets or sets any tags for the feature.
         /// </summary>
+        [DeniedValues(
+            values: [
+                "deprecated",
+            "out-of-date"
+        ])]
         public string[] Tags { get; set; } = [];
 
-        /// <inheritdoc cref="IValidateOptions{TOptions}.Validate(string?, TOptions)" />
         public ValidateOptionsResult Validate(string? name, FeatureOptions options)
         {
-            // Validate the "TodoApi" feature options
-            if (IsNamed(name, expectedName: "TodoApi"))
-            {
-                if (options.Enabled is false)
-                {
-                    return ValidateOptionsResult.Success;
-                }
-
-                List<string> failures = [];
-
-                if (options is { Endpoint: null })
-                {
-                    failures.Add("TODO API required a valid endpoint.");
-                }
-
-                if (options is { Version.Major: 0 })
-                {
-                    failures.Add("TODO API running non-production version.");
-                }
-
-                if (failures.Count is > 0)
-                {
-                    return ValidateOptionsResult.Fail(failures);
-                }
-            }
-
-            if (IsNamed(name, expectedName: "WeatherStation") &&
-                options is { Enabled: true })
-            {
-                return ValidateOptionsResult.Fail("""
-                The weather station cannot be enabled in this environment.
-                """);
-            }
-
-            return ValidateOptionsResult.Skip;
-
-            static bool IsNamed(string? name, string expectedName)
-            {
-                return string.Equals(
-                    name, expectedName,
-                    StringComparison.OrdinalIgnoreCase);
-            }
+            throw new NotImplementedException();
         }
     }
 }

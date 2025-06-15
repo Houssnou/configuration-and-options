@@ -15,6 +15,28 @@ namespace ConfigurationsWithOptionPatternWithValidation
             _options = options;
         }
 
+        // UNCOMMENT THIS FOR MANUAL VALIDATION
+
+        //protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        //{
+        //    while (!stoppingToken.IsCancellationRequested)
+        //    {
+        //        if (_logger.IsEnabled(LogLevel.Information))
+        //        {
+        //            _logger.LogInformation(
+        //           "TODO API feature options: {Options}",
+        //           _options.Get("TodoApi"));
+
+        //            _logger.LogInformation(
+        //                "Weather Station feature options: {Options}",
+        //                _options.Get("WeatherStation"));
+        //        }
+
+        //        await Task.Delay(
+        //            10_000, stoppingToken);
+        //    }
+        //}
+
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
@@ -23,16 +45,33 @@ namespace ConfigurationsWithOptionPatternWithValidation
                 {
                     _logger.LogInformation(
                    "TODO API feature options: {Options}",
-                   _options.Get("TodoApi"));
+                   GetNamedOptionsAsLogString("TodoApi"));
 
                     _logger.LogInformation(
                         "Weather Station feature options: {Options}",
-                        _options.Get("WeatherStation"));
+                        GetNamedOptionsAsLogString("WeatherStation"));
                 }
 
                 await Task.Delay(
                     10_000, stoppingToken);
             }
         }
+
+        private string GetNamedOptionsAsLogString(string name)
+        {
+            try
+            {
+                return _options.Get(name)?.ToString() ?? "";
+            }
+            catch (OptionsValidationException ex)
+            {
+                _logger.LogError(
+                    "{Name} ({Type}): {Errors}",
+                    ex.OptionsName, ex.OptionsType, ex.Message);
+
+                return "";
+            }
+        }
+
     }
 }
