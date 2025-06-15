@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigurationsWithOptionsPa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigurationsWithOptionPatternWithValidation", "ConfigurationsWithOptionPatternWithValidation\ConfigurationsWithOptionPatternWithValidation.csproj", "{46A012BB-7296-44FD-AA27-E00644AA3EB4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigurationsMonitoringWorkerService", "ConfigurationsMonitoringWorkerService\ConfigurationsMonitoringWorkerService.csproj", "{2605507F-C120-4614-A357-AFCF85F48CC1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{46A012BB-7296-44FD-AA27-E00644AA3EB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46A012BB-7296-44FD-AA27-E00644AA3EB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46A012BB-7296-44FD-AA27-E00644AA3EB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2605507F-C120-4614-A357-AFCF85F48CC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2605507F-C120-4614-A357-AFCF85F48CC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2605507F-C120-4614-A357-AFCF85F48CC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2605507F-C120-4614-A357-AFCF85F48CC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
